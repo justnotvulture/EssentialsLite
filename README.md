@@ -1,5 +1,7 @@
 # EssentialsLite
 
+Version 0.2
+
 I don't really know what goes in a readme, but I figured this would be useful if other people ever use this. so...
 - Don't claim this is yours, because it isn't.
 - Install it just like any other Minecraft Plugin.
