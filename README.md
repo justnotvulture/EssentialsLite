@@ -1,9 +1,19 @@
 # EssentialsLite
 
-Version 0.2
+Version 0.2.1
 
-I don't really know what goes in a readme, but I figured this would be useful if other people ever use this. so...
-- Don't claim this is yours, because it isn't.
-- Install it just like any other Minecraft Plugin.
-- You're not allowed to get mad if this breaks something because I never claimed that it wouldn't.
-- I'm always willing to accept free Ice cream if you want to buy me some.
+This plugin is intended to be a lite version of the popular Essentials plugin. Some commands and featres seemed unnecessary or redundant to me
+such as the give and enchant commands added by regular essentials. While still in very early development, I hope to get this plugin to the point
+where it is comparable to the original version and it's newer variants.
+
+Update Notes:
+- Changed the syntax of the flyspeed command
+- Fixed: Flyspeed not working on other players
+
+Known issues:
+- none
+
+Previous Versions:
+- 0.2
+  - Added the /fly command
+  - Added the /flyspeed command
