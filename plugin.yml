@@ -1,0 +1,20 @@
+main: me.swall.essentialsLite.Main
+name: EssentialsLite
+version: 0.2
+author: swalloich
+description: A smaller, newer version of the essentials plugin.
+
+commands:
+  fly:
+    aliases: [f]
+    description: Allows the player to fly regardless of gamemode.
+  flySpeed:
+    description: Changes the speed that the player flys at.
+    
+permissions:
+  essentials.fly:
+    description: Allows the player to fly regardless of gamemode
+    default: false
+  essentials.flySpeed:
+    description: Changes the speed the player flys
+    default: false
