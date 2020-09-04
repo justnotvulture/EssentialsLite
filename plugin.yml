@@ -9,6 +9,7 @@ commands:
     aliases: [f]
     description: Allows the player to fly regardless of gamemode.
   flySpeed:
+    aliases: [fs, fSpeed]
     description: Changes the speed that the player flys at.
     
 permissions:
