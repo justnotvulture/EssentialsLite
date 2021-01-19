@@ -41,6 +41,7 @@ public class Vanish implements CommandExecutor, Listener
 				}
 			}
 		}
+		reader.close();
 		return false;
 	}
 	
