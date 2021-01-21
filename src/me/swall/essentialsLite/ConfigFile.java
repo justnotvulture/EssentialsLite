@@ -5,6 +5,11 @@ import java.lang.Character;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
+/********************************************************
+ * Author: Jacob N
+ * Other Contributors: none
+ * Description: Interacts with config/save state files.
+ *******************************************************/
 public class ConfigFile 
 {
     private File path = null;
@@ -65,14 +70,7 @@ public class ConfigFile
     
     private boolean isValidChar(char c)
     {
-        if (Character.isLetter(c) || c == '=' || Character.isDigit(c))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return (Character.isLetter(c) || c == ':' || Character.isDigit(c));
     }
     
     /************************************************************************
@@ -112,33 +110,26 @@ public class ConfigFile
                             line++;
                         }
                         break;
-                    //case 1 searches for the specified variable.
+                    //case 1 searches for the specified variable and returns its current state if declared.
                     case 1:
                         if (contents.get(line).contains(var))
                         {
                             for(int i = 0; i < contents.get(line).length() - 1; i++)
                             {
-                                
-                                if (contents.get(line).charAt(i) == '=')
+                                if (contents.get(line).charAt(i) == ':')
                                 {
-                                    for (int j = i; j < contents.get(line).length(); j++)
+                                    if (contents.get(line).length() > i + 1 && isValidChar(contents.get(line).charAt(i)))
                                     {
-                                        if (isValidChar(contents.get(line).charAt(j)))
-                                        {
-                                            state += contents.get(line).charAt(j);
-                                        }
+                                        state = contents.get(line).substring(i + 2);
                                     }
-                                    //if there isn't anything on the right hand side of the = sign
+                                    //if there isn't anything on the right hand side of the : sign
                                     //throw an exception to be caught where the method is called.
-                                    if (state.length() < 1)
+                                    else
                                     {
                                         throw new NoSuchElementException("Variable: " + var + " uninitialized.");
                                     }
-                                    else
-                                    {
-                                        step++;
-                                        foundVar = true;
-                                    }
+                                    step++;
+                                    foundVar = true;
                                 }
                             }
                         }
@@ -166,5 +157,20 @@ public class ConfigFile
         // continue searching until both have been found. Note: throw statements force the program to leave the method.
         while (!foundPlayer && !foundVar);
         return state;
+    }
+    
+    public void addVar(String player, String var, String state)
+    {
+        
+    }
+    
+    public void updateVar(String player, String var, String state)
+    {
+        
+    }
+    
+    public void updateConfigFile(ArrayList<String> content)
+    {
+        
     }
 }
