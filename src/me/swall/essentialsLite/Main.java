@@ -1,9 +1,10 @@
 package me.swall.essentialsLite;
 
 import org.bukkit.plugin.java.JavaPlugin;
-import me.swall.essentialsLite.commands.Fly;
-import me.swall.essentialsLite.commands.FlySpeed;
-import me.swall.essentialsLite.commands.WalkSpeed;
+
+import me.swall.essentialsLite.commands.playerCommands.commands.Fly;
+import me.swall.essentialsLite.commands.playerCommands.commands.FlySpeed;
+import me.swall.essentialsLite.commands.playerCommands.commands.WalkSpeed;
 
 public class Main extends JavaPlugin {
 	@Override

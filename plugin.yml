@@ -10,7 +10,9 @@ commands:
     description: Allows the player to fly regardless of gamemode.
   flySpeed:
     aliases: [fs, fSpeed]
-    description: Changes the speed that the player flys at.
+  walkSpeed:
+    aliases: [ws, wSpeed]
+    description: Changes the speed of the player on the ground
     
 permissions:
   essentials.fly:
@@ -18,4 +20,7 @@ permissions:
     default: false
   essentials.flySpeed:
     description: Changes the speed the player flys
+    default: false
+  essentials.walkSpeed:
+    description: Changes the speed the player walks
     default: false
