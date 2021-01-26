@@ -14,12 +14,13 @@ public class ConfigFile
 {
     private File path = null;
     private ArrayList<String> contents;
-    private FileReader in = null;
-    private FileWriter out = null;
+    private FileReader in;
+    private FileWriter out;
     
     ConfigFile(String path) throws IOException
     {
         this.path = new File(path);
+        in = new FileReader(path);
         contents.addAll(getFile());
     }
     
@@ -27,17 +28,17 @@ public class ConfigFile
      * Sets the path and name of the file. Creates a new directory and/or file if
      * it isn't found.
      */
-    public void setFile(String filePath, String fileName)
+    public void setFile(File path)
     {
         //Ensure the file path exists. Create it if it doesn't.
-        path = new File(filePath);
-        if (!path.exists())
+        File tempPath = new File(this.path.getPath());
+        if (!tempPath.exists())
         {
             path.mkdir();
         }
         
         //Ensure the file exists in the directory. Create it if it doesn't.
-        path = new File(filePath.concat(fileName));
+        tempPath = this.path;
         if (!path.exists())
         {
             path.mkdir();
