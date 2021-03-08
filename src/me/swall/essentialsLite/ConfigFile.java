@@ -13,7 +13,7 @@ import java.util.NoSuchElementException;
 public class ConfigFile 
 {
     private File path = null;
-    private ArrayList<String> contents;
+    private ArrayList<String> contents = new ArrayList<String>();
     private FileReader in;
     private FileWriter out;
     
@@ -21,13 +21,19 @@ public class ConfigFile
     {
         this.path = new File(path);
         in = new FileReader(path);
+        out = new FileWriter(path);
         contents.addAll(getFile());
     }
     
-    /*
-     * Sets the path and name of the file. Creates a new directory and/or file if
-     * it isn't found.
-     */
+    /****************************************************************
+     * Method:
+     *    SetFile
+     * Description:
+     *    Sets the path and name of the file. Creates a new directory
+     *    and/or file if it isn't found.
+     * Parameters:
+     *    @param path: the path where the new File is located.
+     ***************************************************************/
     public void setFile(File path)
     {
         //Ensure the file path exists. Create it if it doesn't.
@@ -45,9 +51,15 @@ public class ConfigFile
         }
     }
     
-    /*
-     * Returns the content of the ConfigFile as an ArrayList<String>
-     */
+    /****************************************************************
+     * Method:
+     *    getFile
+     * Description:
+     *    Returns the content of the ConfigFile as an ArrayList of 
+     *    strings.
+     * Parameters:    
+     *    @return Returns an array list of strings, each is a line.
+     ***************************************************************/
     public ArrayList<String> getFile() throws IOException
     {
         BufferedReader in;
@@ -74,13 +86,19 @@ public class ConfigFile
         return (Character.isLetter(c) || c == ':' || Character.isDigit(c));
     }
     
-    /************************************************************************
-     * Searches the config file for the state of a variable for a specified
-     * player. Will throw a NoSuchElementException if anything isn't correct.
-     * @param player: The user name of the player to find in the config file.
-     * @param var: The variable to find the state of.
-     * @return Returns the state of the variable as a string.
-     ***********************************************************************/
+    /****************************************************************
+     * Method:
+     *    getPlayerState
+     * Description:
+     *    Searches the config file for the state of a variable for a 
+     *    specified player. Will throw a NoSuchElementException if 
+     *    anything isn't correct.
+     * Parameters:
+     *    @param player: The user name of the player to find in the
+     *    config file.
+     *    @param var: The variable to find the state of.
+     *    @return Returns the state of the variable as a string.
+     ***************************************************************/
     public String getPlayerState(String player, String var)
     {
         String state = new String();
@@ -90,8 +108,9 @@ public class ConfigFile
         
         boolean foundPlayer = false;
         boolean foundVar = false;
-        //search the file
-        do
+        
+        //search the file for username, then variable. Afterward, retrieve state.
+        while (!(foundPlayer && foundVar))
         {
             //ensure we haven't reached the end of the file.
             if (line < contents.size())
@@ -155,22 +174,47 @@ public class ConfigFile
                 throw new NoSuchElementException("Player: " + player + " not found.");
             }
         }
-        // continue searching until both have been found. Note: throw statements force the program to leave the method.
-        while (!foundPlayer && !foundVar);
         return state;
     }
     
-    public void addVar(String player, String var, String state)
-    {
-        
-    }
-    
+    /****************************************************************
+     * Method:
+     *    updateVar
+     * Description:
+     *    Looks for a variable and updates it's state. If is isn't
+     *    found, it will add the variable to the player's states.
+     * Parameters:
+     *    @param player The player whose state is to be updated.
+     *    @param var    The variable to be updated.
+     *    @param state  The new state of the variable.
+     ***************************************************************/
     public void updateVar(String player, String var, String state)
     {
         
     }
     
-    public void updateConfigFile(ArrayList<String> content)
+    /****************************************************************
+     * Method:
+     *    addPlayer
+     * Description:
+     *    Adds a player and their location at the time the method
+     *    was called to the save state file.
+     * Parameters:
+     *    @param player The player to be added to the file.
+     ***************************************************************/
+    public void addPlayer(String player)
+    {
+        
+    }
+    
+    
+    /****************************************************************
+     * Method:
+     *    updateConfigFile
+     * Description:
+     *    Writes the contents of the content ArrayList to the file.
+     ***************************************************************/
+    public void updateConfigFile()
     {
         
     }
