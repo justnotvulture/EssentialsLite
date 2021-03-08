@@ -17,12 +17,83 @@ public class ConfigFile
     private FileReader in;
     private FileWriter out;
     
+    /****************************************************************
+     * Class Summary:
+     *    ln# egMethod(int param)
+     * 
+     *    045 ConfigFile(StringPath)
+     *    063 isValidChar(char c)
+     *    ### fixPlayerStates(int line, String var)
+     *    ### fixPlayerStates(int line, String var, String state)
+     *    ### setFile(File path)
+     *    ### getFile()
+     *    ### getPlayerState(String player, String var)
+     *    ### updateVar(String player, String var, String state)
+     *    ### addPlayer(String player)
+     *    ### updateConfigFile()
+     ***************************************************************/
+    
+    /****************************************************************
+     * Method:
+     *    Non-Default constructor
+     * Parameters:
+     *    @param path            The path to the file.
+     * Exceptions:
+     *    @exception IOException Will be thrown if the given path
+     *                           doesn't exist.
+     ***************************************************************/
     ConfigFile(String path) throws IOException
     {
         this.path = new File(path);
         in = new FileReader(path);
         out = new FileWriter(path);
         contents.addAll(getFile());
+    }
+    
+    /****************************************************************
+     * Method:
+     *    isValidChar
+     * Description:
+     *    Checks to see if the given character is a character that
+     *    can be found in a config file.
+     * Parameters:
+     *    @param  c The character to be checked.
+     *    @return Whether or not the char is valid.
+     ***************************************************************/
+    private boolean isValidChar(char c)
+    {
+        return (Character.isLetter(c) || c == ':' || Character.isDigit(c));
+    }
+    
+    /****************************************************************
+     * Method:
+     *    fixPlayerStates
+     * Description:
+     *    Adds a missing state and ensure contents maintains any
+     *    necessary order.
+     * Parameters:
+     *    @param line The line the player's state block is found begins.
+     *    @param var  The variable to be added. No state is added.
+     ***************************************************************/
+    private void fixPlayerStates(int line, String var)
+    {
+        return;
+    }
+    
+    /****************************************************************
+     * Method:
+     *    fixPlayerStates
+     * Description:
+     *    Adds a missing state and ensure contents maintains any
+     *    necessary order.
+     * Parameters:
+     *    @param line  The line the player's state block is found begins.
+     *    @param var   The variable to be added.
+     *    @param state The state the variable should be set to.
+     ***************************************************************/
+    private void fixPlayerStates(int line, String var, String state)
+    {
+        return;
     }
     
     /****************************************************************
@@ -79,11 +150,6 @@ public class ConfigFile
             throw new NullPointerException();
         }
         return temp;
-    }
-    
-    private boolean isValidChar(char c)
-    {
-        return (Character.isLetter(c) || c == ':' || Character.isDigit(c));
     }
     
     /****************************************************************
@@ -190,15 +256,61 @@ public class ConfigFile
      ***************************************************************/
     public void updateVar(String player, String var, String state)
     {
+        boolean foundPlayer = false;
+        boolean foundVar = false;
         
+        int line = 0;
+        int step = 0;
+        
+        while (!(foundPlayer && foundVar))
+        {
+            //Ensure we aren't at the end of the file.
+            if (line < contents.size())
+            {
+                switch (step)
+                {
+                    case 0:
+                        if (contents.get(line).contains(player))
+                        {
+                            line++;
+                            step++;
+                            foundPlayer = true;
+                        }
+                        else
+                        {
+                            line++;
+                        }
+                        break;
+                    case 1:
+                        if (contents.get(line).contains(state + ':'))
+                        {
+                            contents.set(line, var + ": " + state);
+                            foundVar = true;
+                        }
+                        else
+                        {
+                            if (isValidChar(contents.get(line + 1).charAt(0)))
+                            {
+                                
+                            }
+                            line++;
+                        }
+                        break;
+                }
+            }
+            //If we have reached the end of the file, throw an exception.
+            else
+            {
+                throw new NoSuchElementException("Player: " + player + " not found.");
+            }
+        }
     }
     
     /****************************************************************
      * Method:
      *    addPlayer
      * Description:
-     *    Adds a player and their location at the time the method
-     *    was called to the save state file.
+     *    Adds a player and their variables.
      * Parameters:
      *    @param player The player to be added to the file.
      ***************************************************************/
