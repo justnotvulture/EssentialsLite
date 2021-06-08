@@ -22,7 +22,7 @@ public class ConfigFile
      *    ln# egMethod(int param)
      * 
      *    045 ConfigFile(StringPath)
-     *    063 isValidChar(char c)
+     *    062 isValidChar(char c)
      *    ### fixPlayerStates(int line, String var)
      *    ### fixPlayerStates(int line, String var, String state)
      *    ### setFile(File path)
@@ -46,7 +46,6 @@ public class ConfigFile
     {
         this.path = new File(path);
         in = new FileReader(path);
-        out = new FileWriter(path);
         contents.addAll(getFile());
     }
     
@@ -122,6 +121,55 @@ public class ConfigFile
         }
     }
     
+    
+    /****************************************************************
+     * Method:
+     *    locatePlayer
+     * Description:
+     *    Locates the player in the contents array
+     * @param player
+     * @return The index in the contents ArrayList that contains the
+     *    player.
+     ***************************************************************/
+    private int locatePlayer(String player)
+    {
+        for (int i = 0; i < contents.size(); i++)
+        {
+            String line = contents.get(i);
+            if (line.length() > 0 && line != null & line.charAt(0) != '#')
+            {
+                if (line.contains(player))
+                    return i;
+            }
+        }
+        return -1;
+    }
+    
+    /****************************************************************
+     * Method:
+     *    locateVar
+     * Description:
+     *    Uses locatePlayer to find the index of a specified player's state.
+     * @param player
+     * @param var
+     * @return
+     ***************************************************************/
+    private int locateVar(String player, String var)
+    {   
+        int i = locatePlayer(player);
+        if (i != -1)
+        {
+            for (; i < contents.size(); i++)
+            {
+                if (contents.get(i).contains(var))
+                    return i;
+                else if (contents.get(i).indexOf(0) != ' ')
+                    return -2;
+            }
+        }
+        return -1;
+    }
+    
     /****************************************************************
      * Method:
      *    getFile
@@ -133,6 +181,7 @@ public class ConfigFile
      ***************************************************************/
     public ArrayList<String> getFile() throws IOException
     {
+        FileReader reader = new FileReader(path);
         BufferedReader in;
         String lineContent;
         ArrayList<String> temp = new ArrayList<String>();
@@ -167,78 +216,20 @@ public class ConfigFile
      ***************************************************************/
     public String getPlayerState(String player, String var)
     {
-        String state = new String();
+        int line = locateVar(player, var);
+        String state = new String("You're not supposed to be here!");
+        int col;
         
-        int line = 0;
-        int step = 0;
-        
-        boolean foundPlayer = false;
-        boolean foundVar = false;
-        
-        //search the file for username, then variable. Afterward, retrieve state.
-        while (!(foundPlayer && foundVar))
+        switch (line)
         {
-            //ensure we haven't reached the end of the file.
-            if (line < contents.size())
-            {
-                switch (step)
-                {
-                    //case 0 searches for the correct player.
-                    case 0:
-                        if (contents.get(line).contains(player))
-                        {
-                            line++;
-                            step++;
-                            foundPlayer = true;
-                        }
-                        else
-                        {
-                            line++;
-                        }
-                        break;
-                    //case 1 searches for the specified variable and returns its current state if declared.
-                    case 1:
-                        if (contents.get(line).contains(var))
-                        {
-                            for(int i = 0; i < contents.get(line).length() - 1; i++)
-                            {
-                                if (contents.get(line).charAt(i) == ':')
-                                {
-                                    if (contents.get(line).length() > i + 1 && isValidChar(contents.get(line).charAt(i)))
-                                    {
-                                        state = contents.get(line).substring(i + 2);
-                                    }
-                                    //if there isn't anything on the right hand side of the : sign
-                                    //throw an exception to be caught where the method is called.
-                                    else
-                                    {
-                                        throw new NoSuchElementException("Variable: " + var + " uninitialized.");
-                                    }
-                                    step++;
-                                    foundVar = true;
-                                }
-                            }
-                        }
-                        //If the the current line doesn't contain the variable, and the next one starts with a non
-                        //space character, the variable isn't there. Throw an exception.
-                        else if (contents.get(line + 1).charAt(0) != ' ')
-                        {
-                            throw new NoSuchElementException("Variable: " + var + " not found.");
-                        }
-                        //if none of the other conditions are true, then we are still in the player's state list.
-                        //increment the line number to go to the next one.
-                        else
-                        {
-                            line++;
-                        }
-                        break;
-                }
-            }
-            //If the end of the file has been reached without finding the specified username, throw an exception.
-            else
-            {
-                throw new NoSuchElementException("Player: " + player + " not found.");
-            }
+            case -1:
+                throw new NoSuchElementException("Player: \"" + player + "\" not found.");
+            case -2:
+                throw new NoSuchElementException("Var: \"" + var + "\" not found.");
+            default:
+                col = contents.get(line).indexOf(':');
+                state = contents.get(line).substring(col + 2);
+                break;
         }
         return state;
     }
@@ -316,7 +307,15 @@ public class ConfigFile
      ***************************************************************/
     public void addPlayer(String player)
     {
-        
+        try
+        {
+            FileWriter writer = new FileWriter(path);
+            writer.close();
+        } catch (IOException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
     
     
