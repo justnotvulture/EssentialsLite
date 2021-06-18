@@ -307,15 +307,14 @@ public class ConfigFile
      ***************************************************************/
     public void addPlayer(String player)
     {
-        try
-        {
-            FileWriter writer = new FileWriter(path);
-            writer.close();
-        } catch (IOException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        
+            if (contents.get(contents.size() - 1).length() != 0)
+            {
+                contents.add("");
+            }
+            contents.add("x: ");
+            
+            
     }
     
     
@@ -327,6 +326,14 @@ public class ConfigFile
      ***************************************************************/
     public void updateConfigFile()
     {
-        
+        try
+        {
+            FileWriter writer = new FileWriter(path);
+            writer.close();
+        } catch (IOException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }
